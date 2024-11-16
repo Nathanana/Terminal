@@ -30,8 +30,8 @@ bool bMoving = false, bFocused = false, bRecovery = false, bLocked = false, bSta
 int pauseSelection = 0;
 const int nScreenWidth = 300, nScreenHeight = 90;
 int nMapHeight = 32, nMapWidth = 32, width, height;
-float fConstFOV = 1.0f, fDepth = 16.0f, fConstSpeed = 0.1f, fConstStamina = 10.f, fConstHealth = 10.0f, fSensitivityX = 0.005f, fSensitivityY = 0.5f;
-float fFOV = fConstFOV, fSpeed = fConstSpeed, fEnemySpeed = 0.008f, fStamina = fConstStamina, fHealth = fConstHealth, fStaminaDrain = 0.01f, fHealthDrain = 0.5f, fStaminaGain = 0.005f;
+float fConstFOV = 1.0f, fDepth = 16.0f, fConstSpeed = 2.0f, fConstStamina = 10.f, fConstHealth = 10.0f, fSensitivityX = 0.005f, fSensitivityY = 0.5f;
+float fFOV = fConstFOV, fSpeed = fConstSpeed, fEnemySpeed = 1.5f, fStamina = fConstStamina, fHealth = fConstHealth, fStaminaDrain = 2.0f, fHealthDrain = 5.0f, fStaminaGain = 1.0f;
 
 vector<int> directions, lastDirections;
 int dir;
@@ -477,11 +477,11 @@ void handleMouse(POINT cursorPos)
 }
 
 
-void handleSprint()
+void handleSprint(float fElapsedTime)
 {
     if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && bMoving && fStamina > 0.0f && !bRecovery) {
         fSpeed = fConstSpeed * 1.6;
-        fStamina -= fStaminaDrain;
+        fStamina -= fStaminaDrain * fElapsedTime;
         if (fFOV < fConstFOV * 1.2)
             fFOV += 0.01;
     }
@@ -489,7 +489,7 @@ void handleSprint()
     {
         fSpeed = fConstSpeed;
         if (fStamina < fConstStamina)
-            fStamina += fStaminaGain;
+            fStamina += fStaminaGain * fElapsedTime;
         if (fStamina < 2.0f)
             bRecovery = true;
         else
@@ -500,42 +500,42 @@ void handleSprint()
 }
 
 
-void handleMovement()
+void handleMovement(float fElapsedTime)
 {
     bMoving = false;
     if (GetAsyncKeyState((unsigned short)'W') & 0x8000) {
-        fPlayerX += sinf(fPlayerAngle) * fSpeed * 0.1f;
-        fPlayerY += cosf(fPlayerAngle) * fSpeed * 0.1f;
-        if (map[(int)(fPlayerY + cosf(fPlayerAngle) * fSpeed * 0.3f) * nMapWidth + (int)(fPlayerX + sinf(fPlayerAngle) * fSpeed * 0.3f)] == '#') {
-            fPlayerX -= sinf(fPlayerAngle) * fSpeed * 0.1f;
-            fPlayerY -= cosf(fPlayerAngle) * fSpeed * 0.1f;
+        fPlayerX += sinf(fPlayerAngle) * fSpeed * fElapsedTime;
+        fPlayerY += cosf(fPlayerAngle) * fSpeed * fElapsedTime;
+        if (map[(int)(fPlayerY + cosf(fPlayerAngle) * fSpeed * fElapsedTime) * nMapWidth + (int)(fPlayerX + sinf(fPlayerAngle) * fSpeed * fElapsedTime)] == '#') {
+            fPlayerX -= sinf(fPlayerAngle) * fSpeed * fElapsedTime;
+            fPlayerY -= cosf(fPlayerAngle) * fSpeed * fElapsedTime;
         }
         bMoving = true;
     }
     if (GetAsyncKeyState((unsigned short)'A') & 0x8000) {
-        fPlayerX -= cosf(fPlayerAngle) * fSpeed * 0.05f;
-        fPlayerY += sinf(fPlayerAngle) * fSpeed * 0.05f;
-        if (map[(int)(fPlayerY + sinf(fPlayerAngle) * fSpeed * 0.3f) * nMapWidth + (int)(fPlayerX - cosf(fPlayerAngle) * fSpeed * 0.3f)] == '#') {
-            fPlayerX += cosf(fPlayerAngle) * fSpeed * 0.1f;
-            fPlayerY -= sinf(fPlayerAngle) * fSpeed * 0.1f;
+        fPlayerX -= cosf(fPlayerAngle) * fSpeed * fElapsedTime * 0.4f;
+        fPlayerY += sinf(fPlayerAngle) * fSpeed * fElapsedTime * 0.4f;
+        if (map[(int)(fPlayerY + sinf(fPlayerAngle) * fSpeed * fElapsedTime) * nMapWidth + (int)(fPlayerX - cosf(fPlayerAngle) * fSpeed * fElapsedTime)] == '#') {
+            fPlayerX += cosf(fPlayerAngle) * fSpeed * fElapsedTime;
+            fPlayerY -= sinf(fPlayerAngle) * fSpeed * fElapsedTime;
         }
         bMoving = true;
     }
     if (GetAsyncKeyState((unsigned short)'S') & 0x8000) {
-        fPlayerX -= sinf(fPlayerAngle) * fSpeed * 0.1f;
-        fPlayerY -= cosf(fPlayerAngle) * fSpeed * 0.1f;
-        if (map[(int)(fPlayerY - cosf(fPlayerAngle) * fSpeed * 0.3f) * nMapWidth + (int)(fPlayerX - sinf(fPlayerAngle) * fSpeed * 0.3f)] == '#') {
-            fPlayerX += sinf(fPlayerAngle) * fSpeed * 0.1f;
-            fPlayerY += cosf(fPlayerAngle) * fSpeed * 0.1f;
+        fPlayerX -= sinf(fPlayerAngle) * fSpeed * fElapsedTime;
+        fPlayerY -= cosf(fPlayerAngle) * fSpeed * fElapsedTime;
+        if (map[(int)(fPlayerY - cosf(fPlayerAngle) * fSpeed * fElapsedTime) * nMapWidth + (int)(fPlayerX - sinf(fPlayerAngle) * fSpeed * fElapsedTime)] == '#') {
+            fPlayerX += sinf(fPlayerAngle) * fSpeed * fElapsedTime;
+            fPlayerY += cosf(fPlayerAngle) * fSpeed * fElapsedTime;
         }
         bMoving = true;
     }
     if (GetAsyncKeyState((unsigned short)'D') & 0x8000) {
-        fPlayerX += cosf(fPlayerAngle) * fSpeed * 0.05f;
-        fPlayerY -= sinf(fPlayerAngle) * fSpeed * 0.05f;
-        if (map[(int)(fPlayerY - sinf(fPlayerAngle) * fSpeed * 0.3f) * nMapWidth + (int)(fPlayerX + cosf(fPlayerAngle) * fSpeed * 0.3f)] == '#') {
-            fPlayerX -= cosf(fPlayerAngle) * fSpeed * 0.1f;
-            fPlayerY += sinf(fPlayerAngle) * fSpeed * 0.1f;
+        fPlayerX += cosf(fPlayerAngle) * fSpeed * fElapsedTime * 0.4f;
+        fPlayerY -= sinf(fPlayerAngle) * fSpeed * fElapsedTime * 0.4f;
+        if (map[(int)(fPlayerY - sinf(fPlayerAngle) * fSpeed * fElapsedTime) * nMapWidth + (int)(fPlayerX + cosf(fPlayerAngle) * fSpeed * fElapsedTime)] == '#') {
+            fPlayerX -= cosf(fPlayerAngle) * fSpeed * fElapsedTime;
+            fPlayerY += sinf(fPlayerAngle) * fSpeed * fElapsedTime;
         }
         bMoving = true;
     }
@@ -682,7 +682,7 @@ bool enemySeesPlayer()
 }
 
 
-void moveHunting() {
+void moveHunting(float fElapsedTime) {
     lastDirections = directions;
     float fDirX = fEnemyX - fPlayerX;
     float fDirY = fEnemyY - fPlayerY;
@@ -693,21 +693,21 @@ void moveHunting() {
 
     float fResAngle = atan2(fDirY, fDirX);
 
-    bool canMoveX = (map[(int)(fEnemyY) * nMapWidth + (int)(fEnemyX - cosf(fResAngle) * fEnemySpeed)] != '#');
-    bool canMoveY = (map[(int)(fEnemyY - sinf(fResAngle) * fEnemySpeed) * nMapWidth + (int)(fEnemyX)] != '#');
+    bool canMoveX = (map[(int)(fEnemyY) * nMapWidth + (int)(fEnemyX - cosf(fResAngle) * fEnemySpeed * fElapsedTime)] != '#');
+    bool canMoveY = (map[(int)(fEnemyY - sinf(fResAngle) * fEnemySpeed * fElapsedTime) * nMapWidth + (int)(fEnemyX)] != '#');
     
     if (canMoveY && canMoveX) 
     {
-        fEnemyX -= cosf(fResAngle) * fEnemySpeed;
-        fEnemyY -= sinf(fResAngle) * fEnemySpeed;
+        fEnemyX -= cosf(fResAngle) * fEnemySpeed * fElapsedTime;
+        fEnemyY -= sinf(fResAngle) * fEnemySpeed * fElapsedTime;
     }
     else if (!canMoveX && canMoveY) 
     {
-        fEnemyY -= sinf(fResAngle) * fEnemySpeed / abs(sinf(fResAngle));
+        fEnemyY -= sinf(fResAngle) * fEnemySpeed * fElapsedTime / abs(sinf(fResAngle));
     } 
     else if (!canMoveY && canMoveX) 
     {
-        fEnemyX -= cosf(fResAngle) * fEnemySpeed / abs(cosf(fResAngle));
+        fEnemyX -= cosf(fResAngle) * fEnemySpeed * fElapsedTime / abs(cosf(fResAngle));
     }
     else
     {
@@ -725,7 +725,7 @@ bool isInVector(const vector<int>& vec, int value) {
 }
 
 
-void moveActive()
+void moveActive(float fElapsedTime)
 {
 
     auto path = findPath((int)fEnemyX, (int)fEnemyY, (int)fPlayerX, (int)fPlayerY);
@@ -734,7 +734,7 @@ void moveActive()
 
     if (bHunting)
     {
-        moveHunting();
+        moveHunting(fElapsedTime);
     }
     else if (!path.empty())
     {
@@ -744,14 +744,14 @@ void moveActive()
         float nextY = (float)(path[0].y) + 0.5f;
 
         if (fEnemyX < nextX && isInVector(directions, RIGHT))
-            fEnemyX += fEnemySpeed;
+            fEnemyX += fEnemySpeed * fElapsedTime;
         else if (fEnemyX > nextX && isInVector(directions, LEFT))
-            fEnemyX -= fEnemySpeed;
+            fEnemyX -= fEnemySpeed * fElapsedTime;
 
         if (fEnemyY < nextY && isInVector(directions, DOWN))
-            fEnemyY += fEnemySpeed;
+            fEnemyY += fEnemySpeed * fElapsedTime;
         else if (fEnemyY > nextY && isInVector(directions, UP))
-            fEnemyY -= fEnemySpeed;
+            fEnemyY -= fEnemySpeed * fElapsedTime;
     }
     else
     {
@@ -760,9 +760,9 @@ void moveActive()
 }
 
 
-void updateEnemy() {
+void updateEnemy(float fElapsedTime) {
     updateDirections();
-    moveActive();
+    moveActive(fElapsedTime);
 }
 
 
@@ -978,6 +978,35 @@ void checkForCollision()
 }
 
 
+void drawStats()
+{
+    for (int nx = 0; nx < (int)fConstStamina * 7; nx++) 
+    {
+        if (fHealth*7 > nx)
+        {
+            screen[(nScreenHeight-7) * nScreenWidth + nx + 5] = 0x2588;
+            screen[(nScreenHeight-8) * nScreenWidth + nx + 5] = 0x2588;
+        }
+        else
+        {
+            screen[(nScreenHeight-7) * nScreenWidth + nx + 5] = ' ';
+            screen[(nScreenHeight-8) * nScreenWidth + nx + 5] = ' ';
+        }
+        if (fStamina*7 > nx)
+        {
+            screen[(nScreenHeight-4) * nScreenWidth + nx + 5] = 0x2588;
+            screen[(nScreenHeight-5) * nScreenWidth + nx + 5] = 0x2588;
+            
+        }
+        else
+        {
+            screen[(nScreenHeight-4) * nScreenWidth + nx + 5] = ' ';
+            screen[(nScreenHeight-5) * nScreenWidth + nx + 5] = ' ';
+        }
+            
+    }
+}
+
 
 int main()
 {
@@ -1061,9 +1090,9 @@ int main()
 
             handleMouse(cursorPos);
 
-            handleSprint();
+            handleSprint(fElapsedTime);
 
-            handleMovement();
+            handleMovement(fElapsedTime);
 
         }
 
@@ -1071,8 +1100,7 @@ int main()
         checkForCollision();
         
         //Enemy
-        updateEnemy();
-
+        updateEnemy(fElapsedTime);
 
         for (int x = 0; x < nScreenWidth; x++) 
             calculateVerticalStrip(x);
@@ -1084,31 +1112,7 @@ int main()
             renderOrb(orb.x, orb.y);    
         }
 
-        for (int nx = 0; nx < (int)fConstStamina * 7; nx++) 
-        {
-            if (fHealth*7 > nx)
-            {
-                screen[(nScreenHeight-7) * nScreenWidth + nx + 5] = 0x2588;
-                screen[(nScreenHeight-8) * nScreenWidth + nx + 5] = 0x2588;
-            }
-            else
-            {
-                screen[(nScreenHeight-7) * nScreenWidth + nx + 5] = ' ';
-                screen[(nScreenHeight-8) * nScreenWidth + nx + 5] = ' ';
-            }
-            if (fStamina*7 > nx)
-            {
-                screen[(nScreenHeight-4) * nScreenWidth + nx + 5] = 0x2588;
-                screen[(nScreenHeight-5) * nScreenWidth + nx + 5] = 0x2588;
-                
-            }
-            else
-            {
-                screen[(nScreenHeight-4) * nScreenWidth + nx + 5] = ' ';
-                screen[(nScreenHeight-5) * nScreenWidth + nx + 5] = ' ';
-            }
-                
-        }
+        drawStats();
 
         orbCount = orbs.size();
         drawNumber(270, 80, orbCount);
@@ -1133,10 +1137,12 @@ int main()
             if (GetAsyncKeyState(VK_DELETE) & 0x0001)
                 orbs.clear();
         }
+
+
         render();
 
         if (abs(fPlayerX - fEnemyX) < 0.01f && abs(fPlayerY - fEnemyY) < 0.01f)
-            fHealth -= fHealthDrain;
+            fHealth -= (fHealthDrain * fElapsedTime);
 
         //GAME OVER - LOSE
         if (fHealth < 0.01f)
