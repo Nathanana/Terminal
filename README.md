@@ -44,7 +44,8 @@ I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK
 ## Code Highlights  
 
 - **Structure**: The main game loop is organized for readability, with subprocesses for each menu and gameplay elements.  
-- **Pathfinding**: Enemy AI uses the A* algorithm (`moveActive()`) to locate the player.  
+- **Pathfinding**: Enemy AI uses the A* algorithm (`moveActive()`) to locate the player.
+- **Delta Time**: Multiplied all functions which update per second by delta time to ensure framerate does not alter their speed (e.g. movement speed)
 
 ## Built With  
 
