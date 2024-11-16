@@ -1,12 +1,12 @@
 # Terminal  
 
-A terminal-based 80s-style first-person game built entirely in C++. Run, collect orbs, and avoid enemies in a retro, command-prompt environment. 
+A terminal-based 80s-style first-person game built entirely in C++. Run, collect orbs, and avoid enemies in a retro, command-prompt environment. This is the first of my one-week projects.
 
 ![image](https://github.com/user-attachments/assets/0dbf1e7e-5f0e-4044-b9da-35033c261432)
 
 ## Overview  
 
-I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK for a YEAR"](https://www.youtube.com/watch?v=nr8biZfSZ3Y), specifically his earlier 3D game projects. I wanted to make a game out of pure code, and I got started from there. I thought of Pac-Man, and what it might seem like from a first person point of view.
+I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK for a YEAR"](https://www.youtube.com/watch?v=nr8biZfSZ3Y). I was inspired by both the one-week projects and his earlier 3D games. I wanted to make a game out of pure code, and I got started from there. I thought of Pac-Man, and what it might seem like from a first person point of view.
 ## Features  
 
 - **Gameplay**: Run from enemies and collect orbs, managing your stamina and health. Enemies drain health when they catch you.  
