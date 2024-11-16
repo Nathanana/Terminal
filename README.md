@@ -22,9 +22,10 @@ I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK
    - `static.wav`
 - **Platform**: Windows (requires the `winmm` library)
 
-2. Change your command prompt font size to 6 or smaller, depending on your monitor size.
+2. Change your command prompt size to 300 x 90 characters, and font size to 6 or less.
    - Open command prompt
    - Press CTRL + ,
+   - Change 'Launch Size' to 300 columns x 90 rows
    - Go to Defaults on the lefthand side
    - Go to Appearance
    - Change font size
@@ -51,10 +52,17 @@ I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK
 
 - **Language**: C++ and Windows Multimedia (linked with -lwinmm)
 
-## Inspiration and Resources  
+## Resources  
 
 - Initial tutorial: [Command Line First Person Shooter Engine](https://www.youtube.com/watch?v=xW8skO7MFYw) by javidx9
 - From there, just a lot of math, problem solving, and forum searching
+
+## Limitations
+
+- Window must be near exact dimensions, or else the game looks like nonsense
+- Sounds can't play over each other
+- Must be on Windows for the Windows Multimedia library and Windows API
+- Cursor is visible
 
 ## Planned Improvements  
 
