@@ -1,7 +1,5 @@
-#include <iostream>
 #include <Windows.h>
 #include <cstddef>
-#include <math.h>
 #include <chrono>
 #include <vector>
 #include <algorithm>
@@ -353,6 +351,8 @@ void resetGame()
 {
     fPlayerX = 18.2f, fPlayerY = 15.5f, fPlayerAngle = -3.14159f / 2.0f, fPlayerPitch = 0.0f;
     fEnemyX = 17.5f, fEnemyY = 15.5f;
+    fHealth = fConstHealth;
+    fStamina = fConstStamina;
     bMoving = false, bFocused = false, bRecovery = false, bLocked = false, bStart = true, bStartTop = true, bEnd = false;
     orbs.clear();
     populateOrbs();
