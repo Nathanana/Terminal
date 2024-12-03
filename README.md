@@ -57,6 +57,12 @@ I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK
 - Must be on Windows for the Windows Multimedia library and Windows API
 - Cursor is visible
 
+## Lessons
+
+- Learned the A* algorithm and how to implement it, in this fairly simple case
+- Crafted a lot of helper functions, greatly helping to minimize the amount of code I actually had to write (I initially printed words "pixel" by "pixel" before I got sick of it)
+- Learned about raycasting
+
 ## License  
 
 This project is licensed under the MIT License.  
