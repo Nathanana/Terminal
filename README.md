@@ -10,19 +10,11 @@ I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK
 
 ## Installation  
 
-1. Download the following files and place them in the same folder:  
-   - `terminal.exe`  
-   - `ambient.wav`  
-   - `static.wav`
-- **Platform**: Windows (requires the `winmm` library)
+1. You'll need to be on Windows, and need to download static.wav and ambient.wav as well as terminal.cpp
 
-2. Change your command prompt size to 300 x 90 characters, and font size to 6 or less.
-   - Open command prompt
-   - Press CTRL + ,
-   - Change 'Launch Size' to 300 columns x 90 rows
-   - Go to Defaults on the lefthand side
-   - Go to Appearance
-   - Change font size
+2. Compile terminal in the same folder as the audio files
+
+3. Change your command prompt size to 300 x 90 characters, and font size to 6 or less.
 
 ## Controls  
 
