@@ -15,6 +15,8 @@ I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK
 2. Compile terminal in the same folder as the audio files with a C++ compiler `g++ terminal.cpp -o terminal -lwinmm`
 
 3. Change your command prompt size to 300 x 90 characters, and font size to 6 or less.
+   
+5. Run using the new terminal.exe
 
 ## Controls  
 
