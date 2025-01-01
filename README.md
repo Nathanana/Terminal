@@ -12,7 +12,7 @@ I was inspired to make Terminal after watching, ["I coded one project EVERY WEEK
 
 1. You'll need to be on Windows, and need to download static.wav and ambient.wav as well as terminal.cpp
 
-2. Compile terminal in the same folder as the audio files `g++ terminal.cpp -o terminal -lwinmm`
+2. Compile terminal in the same folder as the audio files with a C++ compiler `g++ terminal.cpp -o terminal -lwinmm`
 
 3. Change your command prompt size to 300 x 90 characters, and font size to 6 or less.
 
